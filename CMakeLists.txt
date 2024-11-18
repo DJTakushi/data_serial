@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.28.3)
 
 set(DATA_SERIAL_PROJECT_NAME        "data_serial")
 set(DATA_SERIAL_PROJECT_DESCRIPTION "Data Serial")
