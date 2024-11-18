@@ -55,6 +55,9 @@ nlohmann::ordered_json gen_metrics_from_serial(std::string str, sys_tp time){
 }
 
 int main(int argc, char* argv[]) {
+    /** print app version determined from root CMakeLists.txt */
+  std::cout  << std::string(APP_VERSION) << " starting..." <<  std::endl;
+
   signal(SIGINT, sig_int_handler); // registar for ctrl-c
   signal(SIGTERM, exit_application); // terminate from Docker STOPSIGNAL
 
