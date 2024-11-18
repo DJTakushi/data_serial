@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.2)
+
+set(DATA_SERIAL_PROJECT_NAME        "data_serial")
+set(DATA_SERIAL_PROJECT_DESCRIPTION "Data Serial")
+set(DATA_SERIAL_AUTHOR_DOMAIN       "https://github.com/DJTakushi/data_serial")
+set(DATA_SERIAL_V_MAJOR "0")
+set(DATA_SERIAL_V_MINOR "0")
+set(DATA_SERIAL_V_PATCH "1")
+
+set(DATA_SERIAL_VERSION
+    "${DATA_SERIAL_V_MAJOR}.${DATA_SERIAL_V_MINOR}.${DATA_SERIAL_V_PATCH}")
+set(DATA_SERIAL_NAME_VERSION
+    "${DATA_SERIAL_PROJECT_NAME} v${DATA_SERIAL_VERSION}")
+
+add_subdirectory(data_serial)
+add_subdirectory(connection)
+add_subdirectory(serial_helpers)
