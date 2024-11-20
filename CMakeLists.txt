@@ -15,5 +15,5 @@ set(DATA_SERIAL_NAME_VERSION
 add_compile_definitions(APP_VERSION="${DATA_SERIAL_NAME_VERSION}")
 
 add_subdirectory(data_serial)
-add_subdirectory(connection)
+add_subdirectory(embedded_common)
 add_subdirectory(serial_helpers)

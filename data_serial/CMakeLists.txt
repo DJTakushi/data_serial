@@ -11,6 +11,7 @@ target_compile_features(${TARGET} PUBLIC cxx_std_17)
 target_include_directories(${TARGET} PRIVATE
   "../connection/include"
   "../serial_helpers/include"
+  "../embedded_common/connection/include"
 )
 
 target_link_libraries(${TARGET}
