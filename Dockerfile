@@ -28,6 +28,7 @@ RUN cp -r /json/include/* /usr/include/
 
 # build
 ADD . /data_serial/
+RUN rm -r /data_serial/embedded_common/build/*
 RUN rm -r /data_serial/build/*
 
 WORKDIR /data_serial/build
