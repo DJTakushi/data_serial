@@ -1,0 +1,3 @@
+[submodule "embedded_common"]
+	path = embedded_common
+	url = git@github.com:DJTakushi/embedded_common.git
