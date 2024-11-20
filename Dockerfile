@@ -51,6 +51,6 @@ RUN addgroup -S shs && adduser -S shs -G shs
 USER shs
 
 COPY --from=build \
-    /data_serial/build/data_serial/data_serial ./data_serial
+    /data_serial/build/app/app ./app
 
-ENTRYPOINT [ "./data_serial" ]
+ENTRYPOINT [ "./app" ]
