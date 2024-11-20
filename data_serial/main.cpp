@@ -11,6 +11,7 @@
 #include <mosquitto.h>
 #include "nlohmann/json.hpp"
 
+#include "time_helper.h"
 #include "connection_factory.h"
 #include "environment_helpers.h"
 
@@ -55,7 +56,8 @@ nlohmann::ordered_json gen_metrics_from_serial(std::string str, sys_tp time){
 }
 
 int main(int argc, char* argv[]) {
-    /** print app version determined from root CMakeLists.txt */
+  /** print app version determined from root CMakeLists.txt */
+  std::cout  << time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(APP_VERSION) << " starting..." <<  std::endl;
 
   signal(SIGINT, sig_int_handler); // registar for ctrl-c
