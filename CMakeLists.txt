@@ -12,7 +12,7 @@ set(DATA_SERIAL_VERSION
 set(DATA_SERIAL_NAME_VERSION
     "${DATA_SERIAL_PROJECT_NAME} v${DATA_SERIAL_VERSION}")
 
-add_compile_definitions(APP_VERSION="${DATA_SERIAL_NAME_VERSION}")
+add_compile_definitions(DATA_SERIAL_VERSION="${DATA_SERIAL_NAME_VERSION}")
 
 add_subdirectory(app)
 add_subdirectory(data_serial)

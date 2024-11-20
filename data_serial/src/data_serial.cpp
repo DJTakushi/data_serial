@@ -8,7 +8,8 @@
 data_serial::data_serial(connection_type conn_type) :
     connection_type_(conn_type){
   std::cout  << time_helper::time_rfc_3339() <<" : ";
-  std::cout  << std::string(APP_VERSION) << " constructing..." <<  std::endl;
+  std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
+      std::endl;
 }
 
 data_serial::~data_serial() {
