@@ -1,15 +1,10 @@
-set(TARGET data_serial)
-target_compile_features(${TARGET} PUBLIC cxx_std_17)
+set(TARGET app)
 
 if (${AZURE_ROUTES})
   add_compile_definitions(AZURE_ROUTES=${AZURE_ROUTES})
-endif()
-
-file(GLOB_RECURSE SOURCE
-  src/*.cpp
-)
-
-add_library(${TARGET} ${SOURCE} )
+  endif()
+  
+add_executable(${TARGET} main.cpp)
 
 target_compile_features(${TARGET} PUBLIC cxx_std_17)
 
