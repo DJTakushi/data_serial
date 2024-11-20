@@ -72,8 +72,8 @@ int main(int argc, char* argv[]) {
     connection_type type = kMqtt;
   #endif
   std::shared_ptr<connection_i> connection = connection_factory::create(type);
-  connection->initialize();
-  connection->start_loop();
+  // connection->initialize();
+  // connection->start_loop();
 
   while(true){
     std::string str = "";
