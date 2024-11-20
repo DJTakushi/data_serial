@@ -6,7 +6,7 @@
 #include "data_serial.h"
 
 data_serial::data_serial(connection_type conn_type) :
-    connection_type_(conn_type){
+    data_module_base(conn_type){
   std::cout  << time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;
@@ -66,16 +66,8 @@ void data_serial::work_loop(){
     nlohmann::ordered_json j = gen_metrics_from_serial(str, time_);
     // std::cout << j.dump() << std::endl;
 
-    local_conn_->publish("data_serial_output",j.dump());
+    local_publish("data_serial_output",j.dump());
   }
-}
-
-
-void data_serial::start_work_loop(){
-  is_active_=true;
-  work_loop_thread_ = std::thread([this](){
-    this->work_loop();
-  });
 }
 
 void data_serial::close(){
@@ -89,8 +81,4 @@ void data_serial::close(){
   if(local_conn_ != NULL){
     local_conn_->close();
   }
-}
-
-bool data_serial::is_active(){
-  return is_active_;
 }
