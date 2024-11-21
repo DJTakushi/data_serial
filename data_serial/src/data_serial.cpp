@@ -17,7 +17,7 @@ data_serial::~data_serial() {
 }
 
 void data_serial::setup(){
-  local_conn_ = connection_factory::create(connection_type_);
+  setup_local_conn();
 
   serial_port_ = get_serial_port(m_ioService_);
 }
