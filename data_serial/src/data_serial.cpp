@@ -34,9 +34,8 @@ std::string data_serial::get_serial_line(){
   return line;
 }
 
-nlohmann::ordered_json gen_metrics_from_serial(std::string str, sys_tp time){
+nlohmann::ordered_json gen_attributes_from_serial(std::string str, sys_tp time){
   nlohmann::ordered_json j;
-  j["name"]="data_serial";
   std::vector<std::string> parts;
   boost::split(parts,str,boost::is_any_of(","));
 
@@ -51,9 +50,17 @@ nlohmann::ordered_json gen_metrics_from_serial(std::string str, sys_tp time){
     attr["value"] = std::stod(part);
     attr["timestamp"] = epoch;
 
-    j["attributes"].emplace_back(attr);
+    j.emplace_back(attr);
     counter++;
   }
+
+  return j;
+}
+
+nlohmann::ordered_json gen_message_from_serial(std::string str, sys_tp time){
+  nlohmann::ordered_json j;
+  j["name"]="data_serial";
+  j["attributes"] = gen_attributes_from_serial(str,time);
 
   return j;
 }
@@ -91,8 +98,10 @@ void data_serial::update_data(){
     lines_read_.pop();
     time_ = std::chrono::system_clock::now();
   }
+  nlohmann::json attr = gen_attributes_from_serial(str,time_);
+  attribute_host_.update_attributes_from_array(attr);
 
-  nlohmann::ordered_json j = gen_metrics_from_serial(str, time_);
+  nlohmann::ordered_json j = gen_message_from_serial(str, time_);
   // std::cout << j.dump() << std::endl;
 
   local_publish(publish_key_,j.dump());
