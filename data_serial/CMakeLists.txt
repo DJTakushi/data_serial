@@ -15,6 +15,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   "${PROJECT_SOURCE_DIR}/include"
   "include"
   "../serial_helpers/include"
+  "../embedded_common/attributes/include"
   "../embedded_common/connection/include"
   "../embedded_common/common/include"
   "../embedded_common/data_module_base/include"

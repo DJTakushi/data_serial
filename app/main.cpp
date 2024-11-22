@@ -1,8 +1,8 @@
 #include <iostream>
-#include "data_serial.h"
+#include "data_serial_factory.h"
 
 
-std::shared_ptr<data_serial> data_serial_; // global for handlers
+std::shared_ptr<data_module_i> data_serial_; // global for handlers
 void exit_application(int signum) {
   std::cout  << "exiting application..."<<std::endl;
   exit(0);
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     connection_type type = kMqtt;
   #endif
 
-  data_serial_ = std::make_shared<data_serial>("data_serial_output",type);
+  data_serial_ = data_serial_factory::create("data_serial_output",type);
   data_serial_->setup();
   data_serial_->start_all_threads();
   while(data_serial_->is_active()){
