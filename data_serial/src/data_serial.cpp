@@ -93,7 +93,7 @@ void data_serial::update_data(){
   }
 
   nlohmann::ordered_json j = gen_metrics_from_serial(str, time_);
-  std::cout << j.dump() << std::endl;
+  // std::cout << j.dump() << std::endl;
 
   local_publish(publish_key_,j.dump());
 }
