@@ -103,9 +103,5 @@ void data_serial::update_data(){
   nlohmann::json attr = gen_attributes_from_serial(str,time_);
   attribute_host_.update_attributes_from_array(attr);
 
-  // nlohmann::ordered_json j = gen_message_from_serial(str, time_);
-  nlohmann::ordered_json j = create_update_message();
-  // std::cout << j.dump() << std::endl;
-
-  local_publish(publish_key_,j.dump());
+  publish_data();
 }
