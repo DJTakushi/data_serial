@@ -36,7 +36,8 @@ std::string data_serial::get_serial_line(){
   return line;
 }
 
-nlohmann::ordered_json gen_attributes_from_serial(std::string str, sys_tp time){
+nlohmann::ordered_json data_serial::gen_attributes_from_serial(std::string str,
+                                                              sys_tp time){
   nlohmann::ordered_json j;
   std::vector<std::string> parts;
   boost::split(parts,str,boost::is_any_of(","));
@@ -58,15 +59,6 @@ nlohmann::ordered_json gen_attributes_from_serial(std::string str, sys_tp time){
 
   return j;
 }
-
-nlohmann::ordered_json gen_message_from_serial(std::string str, sys_tp time){
-  nlohmann::ordered_json j;
-  j["name"]="data_serial";
-  j["attributes"] = gen_attributes_from_serial(str,time);
-
-  return j;
-}
-
 
 void data_serial::close(){
   is_active_  =  false;
