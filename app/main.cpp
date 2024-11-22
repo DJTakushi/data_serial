@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
   data_serial_ = std::make_shared<data_serial>("data_serial_output",type);
   data_serial_->setup();
-  data_serial_->start_work_loop();
+  data_serial_->start_all_threads();
   while(data_serial_->is_active()){
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

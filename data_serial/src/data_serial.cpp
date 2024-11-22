@@ -58,23 +58,10 @@ nlohmann::ordered_json gen_metrics_from_serial(std::string str, sys_tp time){
   return j;
 }
 
-void data_serial::work_loop(){
-  while(is_active_){
-    std::string str = get_serial_line();
-    sys_tp time_(std::chrono::system_clock::now());
-
-    nlohmann::ordered_json j = gen_metrics_from_serial(str, time_);
-    // std::cout << j.dump() << std::endl;
-
-    local_publish(publish_key_,j.dump());
-  }
-}
 
 void data_serial::close(){
   is_active_  =  false;
-  if (work_loop_thread_.joinable()){
-    work_loop_thread_.join();
-  }
+  stop_all_threads();
   if(serial_port_!= NULL){
     serial_port_->close();
   }
@@ -84,8 +71,29 @@ void data_serial::close(){
 }
 
 void data_serial::receive_data(){
-  // TODO
+  std::string str = get_serial_line();
+  {
+    std::unique_lock lk(lines_read_mutex_);
+    lines_read_.push(str);
+  }
+  lines_read_cv_.notify_one();
 }
+
 void data_serial::update_data(){
-  // TODO
+  std::string str;
+  sys_tp time_;
+  {
+    /* wait for lock message to be avaialble;
+    lock mutex while poping message*/
+    std::unique_lock lk(lines_read_mutex_);
+    lines_read_cv_.wait(lk, [this] { return this->lines_read_.size() > 0; });
+    str = lines_read_.front();
+    lines_read_.pop();
+    time_ = std::chrono::system_clock::now();
+  }
+
+  nlohmann::ordered_json j = gen_metrics_from_serial(str, time_);
+  std::cout << j.dump() << std::endl;
+
+  local_publish(publish_key_,j.dump());
 }
