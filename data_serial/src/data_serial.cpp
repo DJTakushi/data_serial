@@ -5,8 +5,10 @@
 #include "time_helper.h"
 #include "data_serial.h"
 
-data_serial::data_serial(std::string pub_key, connection_type conn_type) :
-    data_module_base(pub_key,conn_type){
+data_serial::data_serial(std::string name,
+                        std::string pub_key,
+                        connection_type conn_type) :
+    data_module_base(name, pub_key,conn_type){
   std::cout  << time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;
@@ -101,7 +103,8 @@ void data_serial::update_data(){
   nlohmann::json attr = gen_attributes_from_serial(str,time_);
   attribute_host_.update_attributes_from_array(attr);
 
-  nlohmann::ordered_json j = gen_message_from_serial(str, time_);
+  // nlohmann::ordered_json j = gen_message_from_serial(str, time_);
+  nlohmann::ordered_json j = create_update_message();
   // std::cout << j.dump() << std::endl;
 
   local_publish(publish_key_,j.dump());

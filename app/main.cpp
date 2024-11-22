@@ -25,7 +25,9 @@ int main(int argc, char* argv[]) {
     connection_type type = kMqtt;
   #endif
 
-  data_serial_ = data_serial_factory::create("data_serial_output",type);
+  data_serial_ = data_serial_factory::create("data_serial",
+                                              "data_serial_output",
+                                              type);
   data_serial_->setup();
   data_serial_->start_all_threads();
   while(data_serial_->is_active()){

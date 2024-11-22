@@ -18,7 +18,7 @@ class data_serial : public data_module_base {
 
 
  public:
-  data_serial(std::string pub_key, connection_type conn_type);
+  data_serial(std::string name, std::string pub_key, connection_type conn_type);
   ~data_serial();
   void setup();
   void close();
