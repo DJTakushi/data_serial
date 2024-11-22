@@ -5,8 +5,8 @@
 #include "time_helper.h"
 #include "data_serial.h"
 
-data_serial::data_serial(connection_type conn_type) :
-    data_module_base(conn_type){
+data_serial::data_serial(std::string pub_key, connection_type conn_type) :
+    data_module_base(pub_key,conn_type){
   std::cout  << time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;
@@ -66,7 +66,7 @@ void data_serial::work_loop(){
     nlohmann::ordered_json j = gen_metrics_from_serial(str, time_);
     // std::cout << j.dump() << std::endl;
 
-    local_publish("data_serial_output",j.dump());
+    local_publish(publish_key_,j.dump());
   }
 }
 
@@ -81,4 +81,11 @@ void data_serial::close(){
   if(local_conn_ != NULL){
     local_conn_->close();
   }
+}
+
+void data_serial::receive_data(){
+  // TODO
+}
+void data_serial::update_data(){
+  // TODO
 }

@@ -13,8 +13,12 @@ class data_serial : public data_module_base {
 
   void work_loop();
 
+  void receive_data();
+  void update_data();
+
+
  public:
-  data_serial(connection_type conn_type);
+  data_serial(std::string pub_key, connection_type conn_type);
   ~data_serial();
   void setup();
   void close();
