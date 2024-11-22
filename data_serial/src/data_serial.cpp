@@ -73,10 +73,10 @@ void data_serial::close(){
 void data_serial::receive_data(){
   std::string str = get_serial_line();
   {
-    std::unique_lock lk(lines_read_mutex_);
+    std::unique_lock lk(receive_data_mutex_);
     lines_read_.push(str);
   }
-  lines_read_cv_.notify_one();
+  receive_data_cv_.notify_one();
 }
 
 void data_serial::update_data(){
@@ -85,8 +85,8 @@ void data_serial::update_data(){
   {
     /* wait for lock message to be avaialble;
     lock mutex while poping message*/
-    std::unique_lock lk(lines_read_mutex_);
-    lines_read_cv_.wait(lk, [this] { return this->lines_read_.size() > 0; });
+    std::unique_lock lk(receive_data_mutex_);
+    receive_data_cv_.wait(lk, [this] { return this->lines_read_.size() > 0; });
     str = lines_read_.front();
     lines_read_.pop();
     time_ = std::chrono::system_clock::now();

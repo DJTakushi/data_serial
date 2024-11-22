@@ -12,8 +12,6 @@ class data_serial : public data_module_base {
   std::string get_serial_line();
 
   std::queue<std::string> lines_read_;
-  std::mutex lines_read_mutex_;
-  std::condition_variable lines_read_cv_;
 
   void receive_data();
   void update_data();
