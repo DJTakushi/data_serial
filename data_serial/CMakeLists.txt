@@ -19,6 +19,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   "../embedded_common/connection/include"
   "../embedded_common/common/include"
   "../embedded_common/data_module_base/include"
+  "../embedded_common/parser/include"
 )
 
 target_link_libraries(${PROJECT_NAME}
