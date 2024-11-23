@@ -15,6 +15,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   "${PROJECT_SOURCE_DIR}/include"
   "include"
   "../serial_helpers/include"
+  "../parser_serial/include"
   "../embedded_common/attributes/include"
   "../embedded_common/connection/include"
   "../embedded_common/common/include"
@@ -28,4 +29,5 @@ target_link_libraries(${PROJECT_NAME}
   connections
   common
   data_module_base
+  parser_serial
 )

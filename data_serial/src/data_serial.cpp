@@ -3,6 +3,7 @@
 
 #include "environment_helpers.h"
 #include "time_helper.h"
+#include "parser_serial.h"
 #include "data_serial.h"
 
 data_serial::data_serial(std::string name,
@@ -12,6 +13,7 @@ data_serial::data_serial(std::string name,
   std::cout  << time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;
+  parser_ = std::make_shared<parser_serial>();
 }
 
 data_serial::~data_serial() {
