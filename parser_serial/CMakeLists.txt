@@ -10,5 +10,10 @@ add_library(${PROJECT_NAME} ${SOURCE})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
   "include"
+  "../embedded_common/common/include"
   "../embedded_common/parser/include"
+)
+
+target_link_libraries(${PROJECT_NAME}
+  common
 )
