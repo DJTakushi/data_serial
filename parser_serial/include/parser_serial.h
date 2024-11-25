@@ -1,10 +1,13 @@
 #pragma once
+#include <iostream>
+#include <string>
 #include "parser_i.h"
 #include "attribute_datatype_enum.h"
 struct serial_def{
   std::string name_;
   uint pos_;
   Datatype type_;
+  serial_def(std::string name, uint pos, Datatype type);
 };
 class parser_serial : public parser_i {
   std::map<uint,serial_def> def_map_;
