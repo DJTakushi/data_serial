@@ -33,15 +33,15 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
   std::string* str = (std::string*)(data);
   boost::trim(*str);
 
-  std::cout << "*str :  " << *str << std::endl;
+  // std::cout << "*str :  " << *str << std::endl;
 
   std::vector<std::string> parts;
   boost::split(parts,*str,boost::is_any_of(","));
 
-  std::cout << "parts : ";
-  for(auto part : parts) {
-    std::cout << part <<"," << std::endl;
-  }
+  // std::cout << "parts : ";
+  // for(auto part : parts) {
+  //   std::cout << part <<"," << std::endl;
+  // }
 
   size_t counter = 0;
   for(auto part : parts) {
@@ -52,9 +52,9 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
       serial_def def = def_map_.at(counter+1);
 
       attr["name"] = def.name_;
-      std::cout << "name : " << def.name_;
+      // std::cout << "name : " << def.name_;
       attr["datatype"] = def.type_;
-      std::cout << " datatype : " << def.type_;
+      // std::cout << " datatype : " << def.type_;
 
       switch (def.type_){
         case kInteger:
@@ -71,7 +71,7 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
       attr["timestamp"] = epoch;
 
       j.emplace_back(attr);
-      std::cout << "j : " << j.dump() << std::endl;
+      // std::cout << "j : " << j.dump() << std::endl;
     }
     counter++;
   }
