@@ -79,7 +79,13 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
 }
 nlohmann::json parser_serial::get_all_supported_attributes(){
   nlohmann::json j;
-  /** TODO: */
+  for(auto ds : def_map_){
+    nlohmann::json def;
+    def["name"] = ds.second.name_;
+    def["datatype"] = ds.second.type_;
+    def["position"] = ds.second.pos_;
+    j.emplace_back(def);
+  }
   return j;
 }
 nlohmann::json parser_serial::get_config(){
