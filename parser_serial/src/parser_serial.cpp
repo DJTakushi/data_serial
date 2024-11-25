@@ -5,7 +5,7 @@
 void parser_serial::configure(nlohmann::json config){
   /** TODO: */
 }
-nlohmann::json parser_serial::get_data(void* data){ // TODO : rename get_attributes_from_data
+nlohmann::json parser_serial::get_attributes_from_data(void* data){
   nlohmann::json j;
   std::string* str = (std::string*)(data);
   sys_tp time = std::chrono::system_clock::now();
