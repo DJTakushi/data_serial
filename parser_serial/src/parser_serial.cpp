@@ -78,7 +78,6 @@ nlohmann::json parser_serial::get_all_supported_attributes(){
 }
 nlohmann::json parser_serial::get_config(){
   nlohmann::json j;
-  nlohmann::json j;
   for(auto ds : def_map_){
     nlohmann::json def;
     def["name"] = ds.second.name_;
@@ -86,5 +85,5 @@ nlohmann::json parser_serial::get_config(){
     def["position"] = ds.second.pos_;
     j.emplace_back(def);
   }
-  return j;  return j;
+  return j;
 }
