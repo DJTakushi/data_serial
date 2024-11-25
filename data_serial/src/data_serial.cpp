@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include "nlohmann/json.hpp"
 
@@ -14,6 +15,10 @@ data_serial::data_serial(std::string name,
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;
   parser_ = std::make_shared<parser_serial>();
+  std::ifstream ifs("data_serial_config.json");
+
+  nlohmann::json config = nlohmann::json::parse(ifs);
+  parser_->configure(config["parser"]["attributes"]);
 }
 
 data_serial::~data_serial() {
