@@ -31,8 +31,15 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
                                                       uint64_t epoch){
   nlohmann::json j;
   std::string* str = (std::string*)(data);
+  std::cout << "*str :  " << *str << std::endl;
+
   std::vector<std::string> parts;
   boost::split(parts,*str,boost::is_any_of(","));
+
+  std::cout << "parts : ";
+  for(auto part : parts) {
+    std::cout << part <<"," << std::endl;
+  }
 
   size_t counter = 0;
   for(auto part : parts) {

@@ -101,7 +101,6 @@ void data_serial::update_data(){
     lines_read_.pop();
     epoch = time_helper::get_epoch_now();
   }
-  std::cout << "str :  " << str << std::endl;
   void* data = (void*)(&str);
   nlohmann::json attr = parser_->get_attributes_from_data(data,epoch);
   std::cout << "attr : " << attr.dump() <<  std::endl;
