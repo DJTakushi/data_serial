@@ -5,15 +5,14 @@
 void parser_serial::configure(nlohmann::json config){
   /** TODO: */
 }
-nlohmann::json parser_serial::get_attributes_from_data(void* data){
+nlohmann::json parser_serial::get_attributes_from_data(void* data,
+                                                      uint64_t epoch){
   nlohmann::json j;
   std::string* str = (std::string*)(data);
-  sys_tp time = std::chrono::system_clock::now();
   std::vector<std::string> parts;
   boost::split(parts,*str,boost::is_any_of(","));
 
   size_t counter = 0;
-  uint64_t epoch = time_helper::get_epoch_now();
   for(auto part : parts) {
     nlohmann::json attr;
     if(counter < def_map_.size()){
@@ -21,7 +20,6 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data){
 
       serial_def& def = def_map_[counter];
 
-      std::string metric_name = "metric"+std::to_string(counter);
       attr["name"] = def.name_;
       attr["datatype"] = def.type_;
       switch (def.type_){

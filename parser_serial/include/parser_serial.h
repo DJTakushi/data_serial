@@ -9,7 +9,7 @@ struct serial_def{
 class parser_serial : public parser_i {
   std::map<uint,serial_def> def_map_;
   void configure(nlohmann::json config);
-  nlohmann::json get_attributes_from_data(void* data);
+  nlohmann::json get_attributes_from_data(void* data, uint64_t epoch);
   nlohmann::json get_all_supported_attributes();
   nlohmann::json get_config();
 };
