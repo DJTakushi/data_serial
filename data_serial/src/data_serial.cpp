@@ -84,7 +84,7 @@ void data_serial::receive_data(){
 
 void data_serial::update_data(){
   std::string str;
-  sys_tp time_;
+  uint64_t epoch;
   {
     /* wait for lock message to be avaialble;
     lock mutex while poping message*/
@@ -92,9 +92,10 @@ void data_serial::update_data(){
     receive_data_cv_.wait(lk, [this] { return this->lines_read_.size() > 0; });
     str = lines_read_.front();
     lines_read_.pop();
-    time_ = std::chrono::system_clock::now();
+    epoch = time_helper::get_epoch_now();
   }
-  nlohmann::json attr = gen_attributes_from_serial(str,time_);
+  void* data = (void*)(&str);
+  nlohmann::json attr = parser_->get_attributes_from_data(data,epoch);
   attribute_host_.update_attributes_from_array(attr);
 
   publish_data();
