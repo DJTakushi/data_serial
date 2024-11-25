@@ -18,9 +18,9 @@ void parser_serial::configure(nlohmann::json config){
         if((*attr)["name"].is_string() &&
             (*attr)["datatype"].is_number_integer() &&
             (*attr)["position"].is_number_integer()){
-          std::string name = (*attr)["name"];
-          uint pos = (*attr)["pos"];
-          Datatype datatype = (*attr)["datatype"];
+          std::string name = attr->at("name");
+          uint pos = attr->at("position");
+          Datatype datatype = attr->at("datatype");
           def_map_.emplace(pos,serial_def(name,pos,datatype));
         }
       }
