@@ -49,7 +49,7 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
     if(counter < def_map_.size()){
       boost::trim(part);
 
-      serial_def def = def_map_.at(counter);
+      serial_def def = def_map_.at(counter+1);
 
       attr["name"] = def.name_;
       std::cout << "name : " << def.name_;
