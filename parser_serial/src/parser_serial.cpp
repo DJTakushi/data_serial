@@ -1,8 +1,6 @@
 #include <boost/algorithm/string.hpp>
-#include <chrono>
 #include "time_helper.h"
 #include "parser_serial.h"
-typedef std::chrono::system_clock::time_point sys_tp;
 
 void parser_serial::configure(nlohmann::json config){
   /** TODO: */
@@ -15,7 +13,7 @@ nlohmann::json parser_serial::get_data(void* data){ // TODO : rename get_attribu
   boost::split(parts,*str,boost::is_any_of(","));
 
   size_t counter = 0;
-  auto epoch = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch()).count(); // TODO : creat common implementation so users don't need chrono
+  uint64_t epoch = time_helper::get_epoch_now();
   for(auto part : parts) {
     nlohmann::json attr;
     if(counter < def_map_.size()){
