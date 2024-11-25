@@ -103,6 +103,7 @@ void data_serial::update_data(){
   }
   void* data = (void*)(&str);
   nlohmann::json attr = parser_->get_attributes_from_data(data,epoch);
+  std::cout << "attr : " << attr.dump() <<  std::endl;
   attribute_host_.update_attributes_from_array(attr);
 
   publish_data();
