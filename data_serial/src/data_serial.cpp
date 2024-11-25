@@ -21,10 +21,10 @@ data_serial::data_serial(std::string name,
   nlohmann::json attr_config = config["parser"]["attributes"];
   parser_->configure(attr_config);
 
-  nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
-  std::cout << "parser configed : ";
-  std::cout << parser_attributes.dump()<<std::endl;
+  nlohmann::json parser_config = parser_->get_config();
+  std::cout << "parser configed : " << parser_config.dump()<<std::endl;
 
+  nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
 }
 
