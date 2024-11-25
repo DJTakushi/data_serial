@@ -31,6 +31,8 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
                                                       uint64_t epoch){
   nlohmann::json j;
   std::string* str = (std::string*)(data);
+  boost::trim(*str);
+
   std::cout << "*str :  " << *str << std::endl;
 
   std::vector<std::string> parts;
@@ -47,10 +49,13 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
     if(counter < def_map_.size()){
       boost::trim(part);
 
-      serial_def& def = def_map_.at(counter-1);
+      serial_def def = def_map_.at(counter);
 
       attr["name"] = def.name_;
+      std::cout << "name : " << def.name_;
       attr["datatype"] = def.type_;
+      std::cout << " datatype : " << def.type_;
+
       switch (def.type_){
         case kInteger:
           attr["value"] = std::stoi(part);
