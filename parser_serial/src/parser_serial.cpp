@@ -59,6 +59,7 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
       attr["timestamp"] = epoch;
 
       j.emplace_back(attr);
+      std::cout << "j : " << j.dump() << std::endl;
     }
     counter++;
   }
