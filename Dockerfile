@@ -53,4 +53,4 @@ USER shs
 COPY --from=build /data_serial/build/app/app ./app
 COPY --from=build /data_serial/data_serial_config.json ./data_serial_config.json
 
-ENTRYPOINT [ "./app" ]
+ENTRYPOINT ./app -c$COMM_TYPE
