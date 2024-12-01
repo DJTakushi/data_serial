@@ -19,3 +19,5 @@ add_subdirectory(data_serial)
 add_subdirectory(embedded_common)
 add_subdirectory(serial_helpers)
 add_subdirectory(parser_serial)
+
+configure_file(data_serial_config.json data_serial_config.json COPYONLY)
