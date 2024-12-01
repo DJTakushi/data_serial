@@ -53,4 +53,5 @@ USER shs
 COPY --from=build /data_serial/build/app/app ./app
 COPY --from=build /data_serial/data_serial_config.json ./data_serial_config.json
 
-ENTRYPOINT ./app -c$COMM_TYPE
+# NOTE : entrypoint should be overridden in deployment manifest to AZURE_ROUTES
+ENTRYPOINT ["./app", "-cMQTT"]
