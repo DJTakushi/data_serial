@@ -22,3 +22,5 @@ target_link_libraries(${TARGET}
   connections
   common
 )
+
+configure_file(../data_serial_config.json data_serial_config.json COPYONLY)
