@@ -6,7 +6,7 @@ FROM alpine:3.20.3 AS build
 RUN apk update && apk add --no-cache build-base
 RUN apk add cmake=3.29.3-r0
 RUN apk add git=2.45.2-r0
-RUN apk add boost1.84-dev=1.84.0-r1
+RUN apk add boost-dev=1.84.0-r1
 RUN apk add openssl-dev=3.3.2-r1
 RUN apk add curl-dev=8.11.0-r2
 RUN apk add util-linux-dev=2.40.1-r1
@@ -42,7 +42,7 @@ RUN cmake -DCMAKE_BUILD_TYPE=Release -DAZURE_ROUTES=1 .. && cmake --build .
 FROM alpine:3.20.3
 
 RUN apk update && apk add --no-cache libstdc++
-RUN apk add boost1.84=1.84.0-r1
+RUN apk add boost=1.84.0-r1
 RUN apk add mosquitto=2.0.18-r0
 RUN apk add curl=8.11.0-r2
 RUN apk add libuuid=2.40.1-r1
