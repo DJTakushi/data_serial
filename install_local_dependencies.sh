@@ -5,7 +5,7 @@ sudo apt-get install -y uuid-dev=2.39.3-9ubuntu6.1
 
 sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa -y
 sudo apt-get update
-sudo apt-get install -y mosquitto-dev=2.0.20*
+sudo apt-get install -y mosquitto-dev=2.0.20* # TODO: get library, but don't run
 
 mkdir -p third_party
 
