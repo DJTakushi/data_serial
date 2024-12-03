@@ -98,10 +98,10 @@ namespace data_serial_repo{
 
 data_module_base  <|-- data_serial : inherits
 ```
-# todo : 
-- [ ] doxygen
-  - [ ] remove third_party
-  - [ ] remove python files
+# todo :
+- [x] doxygen
+  - [x] remove third_party
+  - [x] remove python files
 - [ ] prove mqtt behavior
   - [ ] mqtt-listener script
 - [ ] sample.json update / automation
