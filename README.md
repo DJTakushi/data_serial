@@ -99,16 +99,17 @@ namespace data_serial_repo{
 data_module_base  <|-- data_serial : inherits
 ```
 # todo : 
+- [ ] doxygen
+  - [ ] remove third_party
+  - [ ] remove python files
 - [ ] prove mqtt behavior
   - [ ] mqtt-listener script
 - [ ] sample.json update / automation
   - [ ] unit-test a generated json against sample.json
-- [ ] relocate common files
-  - install_local_depencencies.sh
-  - third_party
+- [x] relocate common files (install_local_depencencies.sh / third_party)
 - [ ] reconnection attempt behavior
 - [ ] configuration commands
-
+  - [ ] receive channel
 
 # developer notes
 - use `socat` for virtual serial
