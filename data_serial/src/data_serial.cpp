@@ -33,6 +33,7 @@ data_serial::~data_serial() {
 }
 
 void data_serial::setup(){
+  local_conn_->subscriptions_add("data_serial_config");
   setup_local_conn();
 
   serial_port_ = get_serial_port(m_ioService_);
