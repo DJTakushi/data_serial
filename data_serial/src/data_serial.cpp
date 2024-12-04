@@ -46,7 +46,8 @@ std::string data_serial::get_serial_line(){
   std::string line = "";
   char c = '0';
 
-  while (c != '\n') {
+  while (c != '\n' && is_active()) {
+    /** TODO: make asynchronous so this doesn't block */
     serial_port_->read_some(boost::asio::buffer(&c, 1));
     line += c;
   }
@@ -104,10 +105,13 @@ void data_serial::update_data(){
     /* wait for lock message to be avaialble;
     lock mutex while poping message*/
     std::unique_lock lk(receive_data_mutex_);
-    receive_data_cv_.wait(lk, [this] { return this->lines_read_.size() > 0; });
-    str = lines_read_.front();
-    lines_read_.pop();
-    epoch = time_helper::get_epoch_now();
+    receive_data_cv_.wait(lk, [this] { return this->lines_read_.size() > 0 ||
+                                              !is_active(); });
+    if(this->lines_read_.size() > 0){
+      str = lines_read_.front();
+      lines_read_.pop();
+    }
+      epoch = time_helper::get_epoch_now();
   }
   void* data = (void*)(&str);
   nlohmann::json attr = parser_->get_attributes_from_data(data,epoch);
