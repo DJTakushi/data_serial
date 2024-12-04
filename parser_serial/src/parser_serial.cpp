@@ -51,7 +51,12 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
           attr["value"] = std::stoi(part);
           break;
         case kDouble:
-          attr["value"] = std::stod(part);
+          try{
+            attr["value"] = std::stod(part);
+          }
+          catch (std::invalid_argument){
+            std::cout << "stod : std::invalid_argument exception"<<std::endl;
+          }
           break;
         case kString:
         default:
