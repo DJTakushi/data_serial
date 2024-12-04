@@ -9,8 +9,10 @@
 
 data_serial::data_serial(std::string name,
                         std::string pub_key,
-                        connection_type conn_type) :
-    data_module_base(name, pub_key,conn_type){
+                        connection_type conn_type,
+                        std::string address,
+                        uint port) :
+    data_module_base(name, pub_key,conn_type,address,port){
   std::cout  << time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;

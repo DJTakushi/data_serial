@@ -20,7 +20,11 @@ class data_serial : public data_module_base {
                                                     sys_tp time);
 
  public:
-  data_serial(std::string name, std::string pub_key, connection_type conn_type);
+  data_serial(std::string name,
+              std::string pub_key,
+              connection_type conn_type,
+              std::string address,
+              uint port);
   ~data_serial();
   void setup();
   void close();
