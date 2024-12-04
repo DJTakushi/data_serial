@@ -1,3 +1,4 @@
+#include <csignal>
 #include <iostream>
 #include "data_serial_factory.h"
 
@@ -56,6 +57,8 @@ uint get_port(int argc, char* argv[]){
 }
 
 int main(int argc, char* argv[]) {
+  signal(SIGINT, sig_int_handler); // registar for ctrl-c
+  signal(SIGTERM, exit_application); // terminate from Docker STOPSIGNAL
   connection_type type = get_connection_type(argc,argv);
   std::string address = get_address(argc,argv);
   uint port = get_port(argc,argv);
