@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(data_serial)
 
-if (${AZURE_ROUTES})
-  add_compile_definitions(AZURE_ROUTES=${AZURE_ROUTES})
-endif()
-
 file(GLOB_RECURSE SOURCE
   src/*.cpp
 )
