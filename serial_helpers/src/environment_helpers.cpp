@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include "environment_helpers.h"
 
@@ -55,6 +56,13 @@ std::shared_ptr<boost_serial_port> get_serial_port(boost_service& service){
   serial_port_ = std::make_shared<boost::asio::serial_port>(service);
 
   std::string serial_port_name = get_serial_port_name();
+  std::cout << "opening port " << serial_port_name << "..."<< std::endl;
+  if (std::filesystem::exists(serial_port_name)) {
+    std::cout << serial_port_name << " exists" << std::endl;
+  }
+  else{
+    std::cout << serial_port_name << " DOES NOT EXIST!" << std::endl;
+  }
   serial_port_->open(serial_port_name);
   std::cout << "opened serial port " << serial_port_name << std::endl;
 
