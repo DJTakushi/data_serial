@@ -27,7 +27,7 @@ connection_type get_connection_type(int argc, char* argv[]){
         std::cout << "connecion type '"<<AZURE_ROUTES<<"' detected"<<std::endl;
       }
       if(str.substr(2,str.npos)==MQTT){
-        type = kAzureIot;
+        type = kMqtt;
         std::cout << "connecion type '"<<MQTT<<"' detected"<<std::endl;
       }
     }
