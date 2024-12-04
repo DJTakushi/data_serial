@@ -115,4 +115,7 @@ data_module_base  <|-- data_serial : inherits
 - use `socat` for virtual serial
   - https://stackoverflow.com/questions/52187/virtual-serial-port-for-linux
   - https://stackoverflow.com/questions/66789336/instance-of-serialstream-open-dev-ttyusb0-throws-an-exception-bad-file-desc
-KERNEL=="ttyUSB[0-9]*",MODE="0666"
+
+```
+echo "KERNEL==\"ttyUSB[0-9]*\",MODE=\"0666\"" | sudo tee  /etc/udev/rules.d/99-serial.rules
+```
