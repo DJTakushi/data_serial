@@ -2,7 +2,7 @@
 #include "time_helper.h"
 #include "parser_serial.h"
 
-serial_def::serial_def(std::string name, uint pos, Datatype type) :
+serial_def::serial_def(std::string name, uint pos, ec::Datatype type) :
     name_(name),
     pos_(pos),
     type_(type) {
@@ -19,7 +19,7 @@ void parser_serial::configure(nlohmann::json config){
             (*attr)["position"].is_number_integer()){
           std::string name = attr->at("name");
           uint pos = attr->at("position");
-          Datatype datatype = attr->at("datatype");
+          ec::Datatype datatype = attr->at("datatype");
           def_map_.emplace(pos,serial_def(name,pos,datatype));
         }
       }
@@ -47,10 +47,10 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
       attr["datatype"] = def.type_;
 
       switch (def.type_){
-        case kInteger:
+        case ec::kInteger:
           attr["value"] = std::stoi(part);
           break;
-        case kDouble:
+        case ec::kDouble:
           try{
             attr["value"] = std::stod(part);
           }
@@ -59,7 +59,7 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
             std::cout << *str <<std::endl;
           }
           break;
-        case kString:
+        case ec::kString:
         default:
           attr["value"] = part;
       }

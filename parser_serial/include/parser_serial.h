@@ -6,10 +6,10 @@
 struct serial_def{
   std::string name_;
   uint pos_;
-  Datatype type_;
-  serial_def(std::string name, uint pos, Datatype type);
+  ec::Datatype type_;
+  serial_def(std::string name, uint pos, ec::Datatype type);
 };
-class parser_serial : public parser_i {
+class parser_serial : public ec::parser_i {
   std::map<uint,serial_def> def_map_;
  public:
   void configure(nlohmann::json config);

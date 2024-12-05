@@ -9,11 +9,11 @@
 
 data_serial::data_serial(std::string name,
                         std::string pub_key,
-                        connection_type conn_type,
+                        ec::connection_type conn_type,
                         std::string address,
                         uint port) :
     data_module_base(name, pub_key,conn_type,address,port){
-  std::cout  << time_helper::time_rfc_3339() <<" : ";
+  std::cout  << ec::time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;
   parser_ = std::make_shared<parser_serial>();
@@ -111,7 +111,7 @@ void data_serial::update_data(){
       str = lines_read_.front();
       lines_read_.pop();
     }
-      epoch = time_helper::get_epoch_now();
+      epoch = ec::time_helper::get_epoch_now();
   }
   void* data = (void*)(&str);
   nlohmann::json attr = parser_->get_attributes_from_data(data,epoch);

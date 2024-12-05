@@ -6,7 +6,7 @@
 #include "data_module_base.h"
 typedef std::chrono::system_clock::time_point sys_tp;
 
-class data_serial : public data_module_base {
+class data_serial : public ec::data_module_base {
   std::shared_ptr<boost::asio::serial_port> serial_port_;
   boost::asio::io_service m_ioService_;
   std::string get_serial_line();
@@ -23,7 +23,7 @@ class data_serial : public data_module_base {
  public:
   data_serial(std::string name,
               std::string pub_key,
-              connection_type conn_type,
+              ec::connection_type conn_type,
               std::string address,
               uint port);
   ~data_serial();

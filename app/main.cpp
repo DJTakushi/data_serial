@@ -4,7 +4,7 @@
 #include "data_serial_factory.h"
 
 
-std::shared_ptr<data_module_i> data_serial_; // global for handlers
+std::shared_ptr<ec::data_module_i> data_serial_; // global for handlers
 void exit_application(int signum) {
   std::cout  << "exiting application..."<<std::endl;
   exit(0);
@@ -22,9 +22,10 @@ void sig_int_handler(int signum) {
 int main(int argc, char* argv[]) {
   signal(SIGINT, sig_int_handler); // registar for ctrl-c
   signal(SIGTERM, exit_application); // terminate from Docker STOPSIGNAL
-  connection_type type = argument_helper::get_connection_type(argc,argv);
-  std::string address = argument_helper::get_address(argc,argv);
-  uint port = argument_helper::get_port(argc,argv);
+  ec::connection_type type =
+      ec::argument_helper::get_connection_type(argc,argv);
+  std::string address = ec::argument_helper::get_address(argc,argv);
+  uint port = ec::argument_helper::get_port(argc,argv);
 
   data_serial_ = data_serial_factory::create("data_serial",
                                               "een",
