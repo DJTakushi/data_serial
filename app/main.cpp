@@ -28,6 +28,7 @@ int main(int argc, char* argv[]) {
 
   data_serial_ = data_serial_factory::create("data_serial",
                                               "een",
+                                              "datsa_serial_config",
                                               type,
                                               address,
                                               port);

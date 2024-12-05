@@ -17,6 +17,7 @@ class data_serial : public ec::data_module_base {
  public:
   data_serial(std::string name,
               std::string pub_key,
+              std::string sub_key,
               ec::connection_type conn_type,
               std::string address,
               uint port);

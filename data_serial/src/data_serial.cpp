@@ -9,10 +9,11 @@
 
 data_serial::data_serial(std::string name,
                         std::string pub_key,
+                        std::string sub_key,
                         ec::connection_type conn_type,
                         std::string address,
                         uint port) :
-    data_module_base(name, pub_key,conn_type,address,port){
+    data_module_base(name, pub_key, sub_key, conn_type, address,port){
   std::cout  << ec::time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
       std::endl;
@@ -35,7 +36,6 @@ data_serial::~data_serial() {
 }
 
 void data_serial::setup(){
-  local_conn_->subscriptions_add("data_serial_config");
   setup_local_conn();
 
   serial_port_ = get_serial_port(m_ioService_);
