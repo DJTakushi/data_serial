@@ -21,8 +21,7 @@ data_serial::data_serial(std::string name,
   std::ifstream ifs("data_serial_config.json");
 
   nlohmann::json config = nlohmann::json::parse(ifs);
-  nlohmann::json attr_config = config["parser"]["attributes"];
-  parser_->configure(attr_config);
+  config_from_json(config);
 
   nlohmann::json parser_config = parser_->get_config();
   std::cout << "parser configed : " << parser_config.dump()<<std::endl;
@@ -33,6 +32,11 @@ data_serial::data_serial(std::string name,
 
 data_serial::~data_serial() {
   close();
+}
+
+void data_serial::config_from_json(nlohmann::json j){
+  nlohmann::json attr_config = j["parser"]["attributes"];
+  parser_->configure(attr_config);
 }
 
 void data_serial::setup(){
