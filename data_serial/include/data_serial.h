@@ -9,10 +9,7 @@ typedef std::chrono::system_clock::time_point sys_tp;
 class data_serial : public ec::data_module_base {
   std::shared_ptr<boost::asio::serial_port> serial_port_;
   boost::asio::io_service m_ioService_;
-  std::string get_serial_line();
-
-  /** TODO: consider using string pointer for faster perforamnce*/
-  std::queue<std::string> lines_read_;
+  std::shared_ptr<std::string> get_serial_line();
 
   void receive_data();
   void update_data();

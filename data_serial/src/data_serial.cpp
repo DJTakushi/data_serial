@@ -41,15 +41,15 @@ void data_serial::setup(){
   serial_port_ = get_serial_port(m_ioService_);
 }
 
-std::string data_serial::get_serial_line(){
+std::shared_ptr<std::string> data_serial::get_serial_line(){
   /** BLOCKING function to get an '\n' terminating line from serial */
-  std::string line = "";
+  std::shared_ptr<std::string> line = std::make_shared<std::string>("");
   char c = '0';
 
   while (c != '\n' && is_active()) {
     /** TODO: make asynchronous so this doesn't block */
     serial_port_->read_some(boost::asio::buffer(&c, 1));
-    line += c;
+    *line += c;
   }
   return line;
 }
@@ -90,32 +90,36 @@ void data_serial::close(){
 }
 
 void data_serial::receive_data(){
-  std::string str = get_serial_line();
+  std::shared_ptr<std::string> str = get_serial_line();
+  std::shared_ptr<void*> v = reinterpret_cast<std::shared_ptr<void*>&>(str);
   {
     std::unique_lock lk(receive_data_mutex_);
-    lines_read_.push(str);
+    received_data_.push(v);
   }
   receive_data_cv_.notify_one();
 }
 
 void data_serial::update_data(){
-  std::string str;
+  std::shared_ptr<void*> v;
   uint64_t epoch;
   {
     /* wait for lock message to be avaialble;
     lock mutex while poping message*/
     std::unique_lock lk(receive_data_mutex_);
-    receive_data_cv_.wait(lk, [this] { return this->lines_read_.size() > 0 ||
+    receive_data_cv_.wait(lk, [this] { return this->received_data_.size() > 0 ||
                                               !is_active(); });
-    if(this->lines_read_.size() > 0){
-      str = lines_read_.front();
-      lines_read_.pop();
+    if(this->received_data_.size() > 0){
+      v = received_data_.front();
+      received_data_.pop();
     }
-      epoch = ec::time_helper::get_epoch_now();
   }
-  void* data = (void*)(&str);
-  nlohmann::json attr = parser_->get_attributes_from_data(data,epoch);
-  attribute_host_.update_attributes_from_array(attr);
 
-  publish_data();
+  if(v.get() != nullptr){
+    epoch = ec::time_helper::get_epoch_now();
+    nlohmann::json attr = parser_->get_attributes_from_data((void*)(v.get()),
+                                                            epoch);
+    attribute_host_.update_attributes_from_array(attr);
+
+    publish_data();
+  }
 }
