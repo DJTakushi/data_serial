@@ -54,30 +54,6 @@ std::shared_ptr<std::string> data_serial::get_serial_line(){
   return line;
 }
 
-nlohmann::ordered_json data_serial::gen_attributes_from_serial(std::string str,
-                                                              sys_tp time){
-  nlohmann::ordered_json j;
-  std::vector<std::string> parts;
-  boost::split(parts,str,boost::is_any_of(","));
-
-  size_t counter = 0;
-  auto epoch = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch()).count();
-  for(auto part : parts) {
-    nlohmann::json attr;
-    std::string metric_name = "metric"+std::to_string(counter);
-    boost::trim(part);
-    attr["name"] = metric_name;
-    attr["datatype"] = 10;
-    attr["value"] = std::stod(part);
-    attr["timestamp"] = epoch;
-
-    j.emplace_back(attr);
-    counter++;
-  }
-
-  return j;
-}
-
 void data_serial::close(){
   is_active_  =  false;
   stop_all_threads();

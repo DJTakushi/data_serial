@@ -14,9 +14,6 @@ class data_serial : public ec::data_module_base {
   void receive_data();
   void update_data();
 
-  nlohmann::ordered_json gen_attributes_from_serial(std::string str,
-                                                    sys_tp time);
-
  public:
   data_serial(std::string name,
               std::string pub_key,
