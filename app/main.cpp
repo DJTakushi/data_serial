@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
   uint port = argument_helper::get_port(argc,argv);
 
   data_serial_ = data_serial_factory::create("data_serial",
-                                              "data_serial_output",
+                                              "een",
                                               type,
                                               address,
                                               port);
