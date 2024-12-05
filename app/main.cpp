@@ -1,6 +1,6 @@
 #include <csignal>
 #include <iostream>
-#include "argument_helper.h"
+#include "arg_helper.h"
 #include "data_serial_factory.h"
 
 
@@ -22,10 +22,9 @@ void sig_int_handler(int signum) {
 int main(int argc, char* argv[]) {
   signal(SIGINT, sig_int_handler); // registar for ctrl-c
   signal(SIGTERM, exit_application); // terminate from Docker STOPSIGNAL
-  ec::connection_type type =
-      ec::argument_helper::get_connection_type(argc,argv);
-  std::string address = ec::argument_helper::get_address(argc,argv);
-  uint port = ec::argument_helper::get_port(argc,argv);
+  ec::connection_type type = ec::arg_helper::get_connection_type(argc,argv);
+  std::string address = ec::arg_helper::get_address(argc,argv);
+  uint port = ec::arg_helper::get_port(argc,argv);
 
   data_serial_ = data_serial_factory::create("data_serial",
                                               "een",
