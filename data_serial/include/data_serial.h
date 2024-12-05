@@ -11,6 +11,7 @@ class data_serial : public data_module_base {
   boost::asio::io_service m_ioService_;
   std::string get_serial_line();
 
+  /** TODO: consider using string pointer for faster perforamnce*/
   std::queue<std::string> lines_read_;
 
   void receive_data();
