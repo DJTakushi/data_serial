@@ -55,7 +55,8 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
             attr["value"] = std::stod(part);
           }
           catch (std::invalid_argument){
-            std::cout << "stod : std::invalid_argument exception"<<std::endl;
+            std::cout << "stod : std::invalid_argument exception in str : ";
+            std::cout << *str <<std::endl;
           }
           break;
         case kString:
