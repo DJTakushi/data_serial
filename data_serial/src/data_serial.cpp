@@ -35,6 +35,7 @@ data_serial::~data_serial() {
 }
 
 void data_serial::config_from_json(nlohmann::json j){
+  data_module_base::config_from_json(j);
   nlohmann::json attr_config = j["parser"]["attributes"];
   parser_->configure(attr_config);
 }
