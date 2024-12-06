@@ -13,7 +13,7 @@ void exit_application(int signum) {
 void sig_int_handler(int signum) {
   // TODO : try relocating serial_port_->close() to exit_application()
   if(data_serial_!= NULL){
-    data_serial_->close();
+    data_serial_->exit();
   }
   std::cout << "ctrl+c pressed, exiting..."<<std::endl;
   exit_application(1);
@@ -33,10 +33,9 @@ int main(int argc, char* argv[]) {
                                               address,
                                               port);
   data_serial_->setup();
-  data_serial_->start_all_threads();
-  while(data_serial_->is_active()){
+  data_serial_->start_running();
+  while(!(data_serial_->is_exited())){
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
-  data_serial_->close();
   std::cout << "...exiting main function..." << std::endl;
 }

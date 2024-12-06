@@ -31,7 +31,7 @@ data_serial::data_serial(std::string name,
 }
 
 data_serial::~data_serial() {
-  close();
+  exit();
 }
 
 void data_serial::config_from_json(nlohmann::json j){
@@ -51,7 +51,7 @@ std::shared_ptr<std::string> data_serial::get_serial_line(){
   std::shared_ptr<std::string> line = std::make_shared<std::string>("");
   char c = '0';
 
-  while (c != '\n' && is_active()) {
+  while (c != '\n' && is_running()) {
     /** TODO: make asynchronous so this doesn't block */
     serial_port_->read_some(boost::asio::buffer(&c, 1));
     *line += c;
@@ -59,8 +59,8 @@ std::shared_ptr<std::string> data_serial::get_serial_line(){
   return line;
 }
 
-void data_serial::close(){
-  is_active_  =  false;
+void data_serial::exit(){
+  status_ = ec::data_module_status::kExiting;
   stop_all_threads();
   if(serial_port_!= NULL){
     serial_port_->close();
@@ -68,6 +68,7 @@ void data_serial::close(){
   if(local_conn_ != NULL){
     local_conn_->close();
   }
+  status_ = ec::data_module_status::kExited;
 }
 
 void data_serial::receive_data(){
@@ -88,7 +89,7 @@ void data_serial::update_data(){
     lock mutex while poping message*/
     std::unique_lock lk(receive_data_mutex_);
     receive_data_cv_.wait(lk, [this] { return this->received_data_.size() > 0 ||
-                                              !is_active(); });
+                                              !is_running(); });
     if(this->received_data_.size() > 0){
       v = received_data_.front();
       received_data_.pop();

@@ -24,5 +24,5 @@ class data_serial : public ec::data_module_base {
               uint port);
   ~data_serial();
   void setup();
-  void close();
+  void exit();
 };
