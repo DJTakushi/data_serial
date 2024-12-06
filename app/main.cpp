@@ -1,7 +1,9 @@
 #include <csignal>
+#include <fstream>
 #include <iostream>
 #include "arg_helper.h"
 #include "data_serial_factory.h"
+#include "config_handler.h"
 
 
 std::shared_ptr<ec::data_module_i> data_serial_; // global for handlers
@@ -26,12 +28,13 @@ int main(int argc, char* argv[]) {
   std::string address = ec::arg_helper::get_address(argc,argv);
   uint port = ec::arg_helper::get_port(argc,argv);
 
-  data_serial_ = data_serial_factory::create("data_serial",
-                                              "een",
-                                              "datsa_serial_config",
-                                              type,
-                                              address,
-                                              port);
+  std::ifstream ifs("data_serial_config.json");
+  nlohmann::json config = nlohmann::json::parse(ifs);
+  ec::config_handler::set_local_conn_type(config, type);
+  ec::config_handler::set_local_conn_address(config, address);
+  ec::config_handler::set_local_conn_port(config, port);
+
+  data_serial_ =  data_serial_factory::create(config);
   data_serial_->start_running();
   while(!(data_serial_->is_exited())){
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
