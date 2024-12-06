@@ -22,12 +22,6 @@ data_serial::data_serial(std::string name,
 
   nlohmann::json config = nlohmann::json::parse(ifs);
   config_from_json(config);
-
-  nlohmann::json parser_config = parser_->get_config();
-  std::cout << "parser configed : " << parser_config.dump()<<std::endl;
-
-  nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
-  attribute_host_.update_attributes_from_array(parser_attributes);
 }
 
 data_serial::~data_serial() {
@@ -35,9 +29,12 @@ data_serial::~data_serial() {
 }
 
 void data_serial::config_from_json(nlohmann::json j){
+  state_ = ec::data_module_status::kConfiguring;
   data_module_base::config_from_json(j);
   nlohmann::json attr_config = j["parser"]["attributes"];
   parser_->configure(attr_config);
+  nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
+  attribute_host_.update_attributes_from_array(parser_attributes);
 }
 
 void data_serial::setup(){
