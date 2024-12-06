@@ -36,7 +36,7 @@ void data_serial::config_from_json(nlohmann::json j){
   nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
 
-  setup()
+  setup();
 }
 
 void data_serial::setup(){
