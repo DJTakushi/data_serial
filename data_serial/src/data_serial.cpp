@@ -35,9 +35,12 @@ void data_serial::config_from_json(nlohmann::json j){
   parser_->configure(attr_config);
   nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
+
+  setup()
 }
 
 void data_serial::setup(){
+  /** TODO: close & set up ONLY the things that need to be set up */
   setup_local_conn();
 
   serial_port_ = get_serial_port(m_ioService_);

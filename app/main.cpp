@@ -32,7 +32,6 @@ int main(int argc, char* argv[]) {
                                               type,
                                               address,
                                               port);
-  data_serial_->setup();
   data_serial_->start_running();
   while(!(data_serial_->is_exited())){
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
