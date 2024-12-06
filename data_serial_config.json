@@ -1,7 +1,17 @@
 {
-  "name": "/dev/ttyUSB0",
-  "device": "foo",
+  "name": "foo",
+  "local_conn":{
+    "type":"MQTT",
+    "address":"localhost",
+    "port":1883,
+    "pub_key": "een",
+    "sub_keys": [
+      "data_serial_config"
+    ]
+  },
   "hardware": {
+    "type": "serial",
+    "name": "/dev/ttyUSB0",
     "baud": 115200
   },
   "parser": {
