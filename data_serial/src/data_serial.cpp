@@ -60,7 +60,7 @@ std::shared_ptr<std::string> data_serial::get_serial_line(){
 }
 
 void data_serial::exit(){
-  status_ = ec::data_module_status::kExiting;
+  state_ = ec::data_module_status::kExiting;
   stop_all_threads();
   if(serial_port_!= NULL){
     serial_port_->close();
@@ -68,7 +68,7 @@ void data_serial::exit(){
   if(local_conn_ != NULL){
     local_conn_->close();
   }
-  status_ = ec::data_module_status::kExited;
+  state_ = ec::data_module_status::kExited;
 }
 
 void data_serial::receive_data(){
