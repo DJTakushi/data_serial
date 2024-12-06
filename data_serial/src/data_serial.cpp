@@ -7,20 +7,10 @@
 #include "parser_serial.h"
 #include "data_serial.h"
 
-data_serial::data_serial(std::string name,
-                        std::string pub_key,
-                        std::string sub_key,
-                        ec::connection_type conn_type,
-                        std::string address,
-                        uint port) :
-    data_module_base(name, pub_key, sub_key, conn_type, address,port){
+data_serial::data_serial(nlohmann::json config) : data_module_base(config){
   std::cout  << ec::time_helper::time_rfc_3339() <<" : ";
-  std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." <<
-      std::endl;
-  parser_ = std::make_shared<parser_serial>();
-  std::ifstream ifs("data_serial_config.json");
+  std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." << std::endl;
 
-  nlohmann::json config = nlohmann::json::parse(ifs);
   config_from_json(config);
 }
 
@@ -32,6 +22,7 @@ void data_serial::config_from_json(nlohmann::json j){
   state_ = ec::data_module_status::kConfiguring;
   data_module_base::config_from_json(j);
   nlohmann::json attr_config = j["parser"]["attributes"];
+  parser_ = std::make_shared<parser_serial>();
   parser_->configure(attr_config);
   nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
