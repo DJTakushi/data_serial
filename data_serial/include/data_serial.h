@@ -11,7 +11,7 @@ class data_serial : public ec::data_module_base {
   boost::asio::io_service m_ioService_;
   std::shared_ptr<std::string> get_serial_line();
 
-  void config_from_json(nlohmann::json j);
+  void config_from_json(nlohmann::json j) override;
   void receive_data();
   void update_data();
 

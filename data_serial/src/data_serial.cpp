@@ -19,6 +19,7 @@ data_serial::~data_serial() {
 }
 
 void data_serial::config_from_json(nlohmann::json j){
+  std::cout << "data_serial::config_from_json" << std::endl;
   state_ = ec::data_module_status::kConfiguring;
   data_module_base::config_from_json(j);
   nlohmann::json attr_config = j["parser"]["attributes"];
