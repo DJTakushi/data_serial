@@ -1,10 +1,10 @@
 {
   "name": "foo",
+  "pub_key": "een",
   "local_conn":{
     "type":"MQTT",
     "address":"localhost",
     "port":1883,
-    "pub_key": "een",
     "sub_keys": [
       "data_serial_config"
     ]

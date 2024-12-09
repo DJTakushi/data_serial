@@ -2,22 +2,6 @@
 #include <iostream>
 #include "environment_helpers.h"
 
-std::string get_serial_port_name(){
-  std::string port_name = "/dev/ttyUSB0";
-  char* port_name_env = std::getenv("SERIAL_PORT_NAME");
-  if (port_name_env != NULL){
-    port_name = std::stoi(port_name_env);
-  }
-  return port_name;
-}
-uint32_t get_serial_bauderate(){
-  uint32_t bauderate = 115200;
-  char* baude_env = std::getenv("SERIAL_BAUDERATE");
-  if (baude_env != NULL){
-    bauderate = std::stoi(baude_env);
-  }
-  return bauderate;
-};
 uint8_t get_serial_char_size(){
   uint8_t char_size = 8;
   char* char_size_env = std::getenv("SERIAL_CHAR_SIZE");
@@ -51,30 +35,30 @@ spb::flow_control::type get_serial_flow_control() {
   return flow_control;
 }
 
-std::shared_ptr<boost_serial_port> get_serial_port(boost_service& service){
+std::shared_ptr<boost_serial_port> get_serial_port(boost_service& service,
+                                                    std::string port_name,
+                                                    uint baud_rate){
   std::shared_ptr<boost_serial_port> serial_port_;
   serial_port_ = std::make_shared<boost::asio::serial_port>(service);
 
-  std::string serial_port_name = get_serial_port_name();
-  std::cout << "opening port " << serial_port_name << "..."<< std::endl;
-  if (std::filesystem::exists(serial_port_name)) {
-    std::cout << serial_port_name << " exists" << std::endl;
+  std::cout << "opening port " << port_name << "..."<< std::endl;
+  if (std::filesystem::exists(port_name)) {
+    std::cout << port_name << " exists" << std::endl;
   }
   else{
-    std::cout << serial_port_name << " DOES NOT EXIST!" << std::endl;
+    std::cout << port_name << " DOES NOT EXIST!" << std::endl;
   }
-  serial_port_->open(serial_port_name);
-  std::cout << "opened serial port " << serial_port_name << std::endl;
+  serial_port_->open(port_name);
+  std::cout << "opened serial port " << port_name << std::endl;
 
   // parameters for reading from proxybox
-  uint32_t baud_rate_ = get_serial_bauderate();
   uint8_t serial_char_size_ = get_serial_char_size();
   spb::parity::type serial_parity_ = get_serial_parity();
   spb::stop_bits::type serial_stop_bits_ = get_serial_stop_bits();
   spb::flow_control::type serial_flow_control_ = get_serial_flow_control();
 
-  serial_port_->set_option(spb::baud_rate(baud_rate_));
-  std::cout << "set baud_rate : " << baud_rate_ << std::endl;
+  serial_port_->set_option(spb::baud_rate(baud_rate));
+  std::cout << "set baud_rate : " << baud_rate << std::endl;
 
   serial_port_->set_option(spb::character_size(serial_char_size_));
   std::cout << "set char_size : " << int(serial_char_size_) << std::endl;

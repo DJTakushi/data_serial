@@ -21,30 +21,92 @@ data_serial::~data_serial() {
   exit();
 }
 
+bool data_serial::extract_hardware_name(nlohmann::json j, std::string& name){
+  bool success = false;
+  if(j.contains("hardware")){
+    if(j["hardware"].is_object()){
+      nlohmann::json hardware_conf = j["hardware"];
+      if(hardware_conf.contains("name")){
+        if(hardware_conf["name"].is_string()){
+          name = hardware_conf["name"];
+          success = true;
+        }
+        else{
+          std::cerr << "config.hardware.name is not a string" << std::endl;
+        }
+      }
+      else{
+        std::cerr << "config.hardware does not contain name" << std::endl;
+      }
+    }
+    else{
+      std::cerr << "config.hardware is not an object" << std::endl;
+    }
+  }
+  else{
+    std::cerr << "config.hardware is missing" << std::endl;
+  }
+  return success;
+}
+bool data_serial::extract_hardware_baudrate(nlohmann::json j, uint& baud){
+  bool success = false;
+  if(j.contains("hardware")){
+    if(j["hardware"].is_object()){
+      nlohmann::json hardware_conf = j["hardware"];
+      if(hardware_conf.contains("baud")){
+        if(hardware_conf["baud"].is_number_integer()){
+          baud = hardware_conf["baud"];
+          success = true;
+        }
+        else{
+          std::cerr << "config.hardware.name is not a string" << std::endl;
+        }
+      }
+      else{
+        std::cerr << "config.hardware does not contain name" << std::endl;
+      }
+    }
+    else{
+      std::cerr << "config.hardware is not an object" << std::endl;
+    }
+  }
+  else{
+    std::cerr << "config.hardware is missing" << std::endl;
+  }
+  return success;
+}
+
 bool data_serial::is_config_good(nlohmann::json j){
   bool is_good = data_module_base::is_config_good(j);
   /** TODO: verify data_serial components are good */
+  std::string tmp_hardware_name;
+  is_good &= extract_hardware_name(j,tmp_hardware_name);
+
+  uint tmp_baudrate;
+  is_good &= extract_hardware_baudrate(j, tmp_baudrate);
   return is_good;
 }
 
 void data_serial::config_from_json(nlohmann::json j){
   data_module_base::config_from_json(j);
 
+  extract_hardware_name(j,port_name_);
+  extract_hardware_baudrate(j, baud_rate_);
+
+  /** TODO: make parser-generation an overloaded function and call from base class */
   nlohmann::json attr_config = j["parser"]["attributes"];
   parser_ = std::make_shared<parser_serial>();
   parser_->configure(attr_config);
 
   nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
-  config_queued_.clear();
-  state_ = ec::kConfigured;
 }
 
 void data_serial::setup(){
   /** TODO: close & set up ONLY the things that need to be set up */
   setup_local_conn();
 
-  serial_port_ = get_serial_port(m_ioService_);
+  serial_port_ = get_serial_port(m_ioService_, port_name_, baud_rate_);
   start_all_threads();
   state_ = ec::kRunning;
 }
@@ -102,4 +164,11 @@ void data_serial::stop(){
   if(serial_port_!= NULL){
     serial_port_->close();
   }
+}
+nlohmann::ordered_json data_serial::config_hardware_gen(){
+  nlohmann::ordered_json hw_config;
+  hw_config["type"] = "serial";
+  hw_config["name"] = port_name_;
+  hw_config["baud"] = baud_rate_;
+  return hw_config;
 }
