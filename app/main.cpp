@@ -15,7 +15,7 @@ void exit_application(int signum) {
 void sig_int_handler(int signum) {
   // TODO : try relocating serial_port_->close() to exit_application()
   if(data_serial_!= NULL){
-    data_serial_->exit();
+    data_serial_->command_exit();
   }
   std::cout << "ctrl+c pressed, exiting..."<<std::endl;
   exit_application(1);
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
   ec::config_handler::set_local_conn_port(config, port);
 
   data_serial_ =  data_serial_factory::create(config);
-  data_serial_->start_running();
+  data_serial_->command_run();
   while(!(data_serial_->is_exited())){
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
