@@ -20,11 +20,15 @@ data_serial::~data_serial() {
 
 void data_serial::config_from_json(nlohmann::json j){
   std::cout << "data_serial::config_from_json" << std::endl;
+  /** TODO: clear threads/connections/hardware */
+
   state_ = ec::data_module_status::kConfiguring;
   data_module_base::config_from_json(j);
+
   nlohmann::json attr_config = j["parser"]["attributes"];
   parser_ = std::make_shared<parser_serial>();
   parser_->configure(attr_config);
+
   nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
 
