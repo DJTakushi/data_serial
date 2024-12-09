@@ -11,18 +11,23 @@ data_serial::data_serial(nlohmann::json config) : data_module_base(config){
   std::cout  << ec::time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." << std::endl;
 
-  config_from_json(config);
+  start_state_machine_loop();
+  if(!is_config_good(config)){
+    state_ = ec:: kConfigBad; // flag bad config so we can exit
+  }
 }
 
 data_serial::~data_serial() {
   exit();
 }
 
-void data_serial::config_from_json(nlohmann::json j){
-  std::cout << "data_serial::config_from_json" << std::endl;
-  /** TODO: clear threads/connections/hardware */
+bool data_serial::is_config_good(nlohmann::json j){
+  bool is_good = data_module_base::is_config_good(j);
+  /** TODO: verify data_serial components are good */
+  return is_good;
+}
 
-  state_ = ec::data_module_status::kConfiguring;
+void data_serial::config_from_json(nlohmann::json j){
   data_module_base::config_from_json(j);
 
   nlohmann::json attr_config = j["parser"]["attributes"];
@@ -31,8 +36,8 @@ void data_serial::config_from_json(nlohmann::json j){
 
   nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
-
-  setup();
+  config_queued_.clear();
+  state_ = ec::kConfigured;
 }
 
 void data_serial::setup(){
@@ -40,6 +45,8 @@ void data_serial::setup(){
   setup_local_conn();
 
   serial_port_ = get_serial_port(m_ioService_);
+  start_all_threads();
+  state_ = ec::kRunning;
 }
 
 std::shared_ptr<std::string> data_serial::get_serial_line(){
@@ -53,18 +60,6 @@ std::shared_ptr<std::string> data_serial::get_serial_line(){
     *line += c;
   }
   return line;
-}
-
-void data_serial::exit(){
-  state_ = ec::data_module_status::kExiting;
-  stop_all_threads();
-  if(serial_port_!= NULL){
-    serial_port_->close();
-  }
-  if(local_conn_ != NULL){
-    local_conn_->close();
-  }
-  state_ = ec::data_module_status::kExited;
 }
 
 void data_serial::receive_data(){
@@ -99,5 +94,12 @@ void data_serial::update_data(){
     attribute_host_.update_attributes_from_array(attr);
 
     publish_data();
+  }
+}
+
+void data_serial::stop(){
+  data_module_base::stop();
+  if(serial_port_!= NULL){
+    serial_port_->close();
   }
 }
