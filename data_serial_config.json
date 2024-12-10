@@ -15,8 +15,7 @@
     "baud": 115200
   },
   "parser": {
-    "name": "delimited",
-    "linedelimiter": "\\n",
+    "linedelimiter": "\n",
     "fielddelimiter": ",",
     "attributes": [
       {
