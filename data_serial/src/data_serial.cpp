@@ -6,7 +6,7 @@
 #include "time_helper.h"
 #include "parser_serial.h"
 #include "data_serial.h"
-#include "data_serial_config_helper.h"
+#include "data_serial_config.h"
 
 data_serial::data_serial(nlohmann::json config) : data_module_base(config){
   std::cout  << ec::time_helper::time_rfc_3339() <<" : ";
@@ -24,26 +24,28 @@ data_serial::~data_serial() {
 }
 
 bool data_serial::is_config_good(nlohmann::json j){
-  bool is_good = data_module_base::is_config_good(j);
   /** TODO: verify data_serial components are good */
-  std::string tmp_hardware_name;
-  is_good &= extract_hardware_name(j,tmp_hardware_name);
-
-  uint tmp_baudrate;
-  is_good &= extract_hardware_baudrate(j, tmp_baudrate);
-  return is_good;
+  data_serial_config cfg = data_serial_config(j);
+  return cfg.good;
 }
 
 void data_serial::config_from_json(nlohmann::json j){
-  data_module_base::config_from_json(j);
+  data_serial_config cfg = data_serial_config(j);
+  if(cfg.good){
+    data_module_base::config_from_json(j);
+    data_serial_config::extract_hardware_name(j,port_name_);
+    data_serial_config::extract_hardware_baudrate(j, baud_rate_);
+    parser_->configure(j["parser"]);
+    // TODO : check that parrser exists;
+    // TODO : configure in base class
 
-  extract_hardware_name(j,port_name_);
-  extract_hardware_baudrate(j, baud_rate_);
-
-  parser_->configure(j["parser"]);
-
-  nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
-  attribute_host_.update_attributes_from_array(parser_attributes);
+    nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
+    attribute_host_.update_attributes_from_array(parser_attributes);
+  }
+  else{
+    std::cerr << "config not good!" << std::endl;
+    state_ = ec::kConfigBad;
+  }
 }
 char data_serial::get_line_delim_from_parser(){
   std::shared_ptr<parser_serial> p = std::static_pointer_cast<parser_serial>(parser_);

@@ -1,8 +1,14 @@
 #include <iostream>
+#include "data_serial_config.h"
 
-#include "data_serial_config_helper.h"
+data_serial_config::data_serial_config(nlohmann::json j)
+                                                : data_module_base_config(j){
+  good &= extract_hardware_name(j,hardware_name);
+  good &= extract_hardware_baudrate(j,port);
+}
 
-bool extract_hardware_name(nlohmann::json j, std::string& name){
+bool data_serial_config::extract_hardware_name(nlohmann::json j,
+                                                std::string& name){
   bool success = false;
   if(j.contains("hardware")){
     if(j["hardware"].is_object()){
@@ -29,7 +35,8 @@ bool extract_hardware_name(nlohmann::json j, std::string& name){
   }
   return success;
 }
-bool extract_hardware_baudrate(nlohmann::json j, uint& baud){
+bool data_serial_config::extract_hardware_baudrate(nlohmann::json j,
+                                                    uint& baud){
   bool success = false;
   if(j.contains("hardware")){
     if(j["hardware"].is_object()){
