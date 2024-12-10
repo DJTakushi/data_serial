@@ -13,7 +13,6 @@ void exit_application(int signum) {
 }
 
 void sig_int_handler(int signum) {
-  // TODO : try relocating serial_port_->close() to exit_application()
   if(data_serial_!= NULL){
     data_serial_->command_exit();
   }
