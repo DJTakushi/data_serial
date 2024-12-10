@@ -51,12 +51,16 @@ char data_serial::get_line_delim_from_parser(){
 }
 
 void data_serial::start(){
-  /** TODO: close & set up ONLY the things that need to be set up */
-  setup_local_conn();
-
   serial_port_ = get_serial_port(m_ioService_, port_name_, baud_rate_);
-  start_all_threads();
-  state_ = ec::kRunning;
+  if(serial_port_->is_open()){
+    setup_local_conn();
+    start_all_threads();
+    state_ = ec::kRunning;
+  }
+  else{
+    std::cout << "start() failed; exiting..."<<std::endl;
+    state_ = ec::kExiting;
+  }
 }
 
 std::shared_ptr<std::string> data_serial::get_serial_line(){
