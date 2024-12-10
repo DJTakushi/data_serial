@@ -50,7 +50,7 @@ char data_serial::get_line_delim_from_parser(){
   return p->get_line_delim();
 }
 
-void data_serial::setup(){
+void data_serial::start(){
   /** TODO: close & set up ONLY the things that need to be set up */
   setup_local_conn();
 

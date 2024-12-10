@@ -25,5 +25,5 @@ class data_serial : public ec::data_module_base {
  public:
   data_serial(nlohmann::json config);
   ~data_serial();
-  void setup();
+  void start();
 };
