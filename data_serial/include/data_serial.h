@@ -7,6 +7,7 @@
 typedef std::chrono::system_clock::time_point sys_tp;
 
 class data_serial : public ec::data_module_base {
+ protected:
   char get_line_delim_from_parser();
   std::string port_name_;
   uint baud_rate_;
@@ -20,9 +21,9 @@ class data_serial : public ec::data_module_base {
   void update_data();
 
   void stop();
+  void start();
   nlohmann::ordered_json config_hardware_gen();
  public:
   data_serial(nlohmann::json config);
   ~data_serial();
-  void start();
 };
