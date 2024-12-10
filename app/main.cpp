@@ -3,7 +3,7 @@
 #include <iostream>
 #include "arg_helper.h"
 #include "data_serial_factory.h"
-#include "config_handler.h"
+#include "data_module_base_config.h"
 
 
 std::shared_ptr<ec::data_module_i> data_serial_; // global for handlers
@@ -30,9 +30,9 @@ int main(int argc, char* argv[]) {
 
   std::ifstream ifs("data_serial_config.json");
   nlohmann::json config = nlohmann::json::parse(ifs);
-  ec::config_handler::set_local_conn_type(config, type);
-  ec::config_handler::set_local_conn_address(config, address);
-  ec::config_handler::set_local_conn_port(config, port);
+  ec::data_module_base_config::set_local_conn_type(config, type);
+  ec::data_module_base_config::set_local_conn_address(config, address);
+  ec::data_module_base_config::set_local_conn_port(config, port);
 
   data_serial_ =  data_serial_factory::create(config);
   data_serial_->command_run();
