@@ -10,6 +10,7 @@
 data_serial::data_serial(nlohmann::json config) : data_module_base(config){
   std::cout  << ec::time_helper::time_rfc_3339() <<" : ";
   std::cout  << std::string(DATA_SERIAL_VERSION) << " constructing..." << std::endl;
+  parser_ = std::make_shared<parser_serial>();
 
   start_state_machine_loop();
   if(!is_config_good(config)){
@@ -93,13 +94,14 @@ void data_serial::config_from_json(nlohmann::json j){
   extract_hardware_name(j,port_name_);
   extract_hardware_baudrate(j, baud_rate_);
 
-  /** TODO: make parser-generation an overloaded function and call from base class */
-  nlohmann::json attr_config = j["parser"]["attributes"];
-  parser_ = std::make_shared<parser_serial>();
-  parser_->configure(attr_config);
+  parser_->configure(j["parser"]);
 
   nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
   attribute_host_.update_attributes_from_array(parser_attributes);
+}
+char data_serial::get_line_delim_from_parser(){
+  std::shared_ptr<parser_serial> p = std::static_pointer_cast<parser_serial>(parser_);
+  return p->get_line_delim();
 }
 
 void data_serial::setup(){
@@ -116,7 +118,7 @@ std::shared_ptr<std::string> data_serial::get_serial_line(){
   std::shared_ptr<std::string> line = std::make_shared<std::string>("");
   char c = '0';
 
-  while (c != '\n' && is_running()) {
+  while (c != get_line_delim_from_parser() && is_running()) {
     /** TODO: make asynchronous so this doesn't block */
     serial_port_->read_some(boost::asio::buffer(&c, 1));
     *line += c;
