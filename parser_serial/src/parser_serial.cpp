@@ -93,8 +93,15 @@ nlohmann::json parser_serial::get_all_supported_attributes(){
   }
   return j;
 }
-nlohmann::json parser_serial::get_config(){
-  nlohmann::json j;
+nlohmann::ordered_json parser_serial::get_config(){
+  nlohmann::ordered_json config;
+  config["linedelimter"] = line_delim_;
+  config["fielddelimiter"] = field_delim_;
+  config["attributes"] = get_attribute_config();
+  return config;
+}
+nlohmann::ordered_json parser_serial::get_attribute_config(){
+  nlohmann::ordered_json j;
   for(auto ds : def_map_){
     nlohmann::json def;
     def["name"] = ds.second.name_;

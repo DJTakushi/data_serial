@@ -18,6 +18,7 @@ class parser_serial : public ec::parser_i {
   void configure(nlohmann::json config);
   nlohmann::json get_attributes_from_data(void* data, uint64_t epoch);
   nlohmann::json get_all_supported_attributes();
-  nlohmann::json get_config();
+  nlohmann::ordered_json get_config();
+  nlohmann::ordered_json get_attribute_config();
   char get_line_delim();
 };
