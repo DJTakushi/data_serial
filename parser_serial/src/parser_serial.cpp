@@ -103,7 +103,7 @@ nlohmann::ordered_json parser_serial::get_config(){
 nlohmann::ordered_json parser_serial::get_attribute_config(){
   nlohmann::ordered_json j;
   for(auto ds : def_map_){
-    nlohmann::json def;
+    nlohmann::ordered_json def;
     def["name"] = ds.second.name_;
     def["datatype"] = ds.second.type_;
     def["position"] = ds.second.pos_;
