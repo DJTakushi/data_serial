@@ -30,6 +30,8 @@ int main(int argc, char* argv[]) {
 
   std::ifstream ifs("data_serial_config.json");
   nlohmann::json config = nlohmann::json::parse(ifs);
+
+  // overwrite config with arguments
   ec::data_module_base_config::set_local_conn_type(config, type);
   ec::data_module_base_config::set_local_conn_address(config, address);
   ec::data_module_base_config::set_local_conn_port(config, port);
