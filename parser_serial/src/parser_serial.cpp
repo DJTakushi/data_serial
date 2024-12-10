@@ -95,7 +95,7 @@ nlohmann::json parser_serial::get_all_supported_attributes(){
 }
 nlohmann::ordered_json parser_serial::get_config(){
   nlohmann::ordered_json config;
-  config["linedelimter"] = line_delim_;
+  config["linedelimiter"] = std::string{line_delim_};
   config["fielddelimiter"] = field_delim_;
   config["attributes"] = get_attribute_config();
   return config;
