@@ -7,8 +7,19 @@ serial_def::serial_def(std::string name, uint pos, ec::Datatype type) :
     pos_(pos),
     type_(type) {
 }
-
 void parser_serial::configure(nlohmann::json config){
+  if(config.contains("attributes")){
+    configure_attributes(config["attributes"]);
+  }
+  if(config.contains("linedelimiter")){
+    std::string tmp_str = config["linedelimiter"];
+    line_delim_ = tmp_str.c_str()[0];
+  }
+  if(config.contains("fielddelimiter")){
+    field_delim_ = config["fielddelimiter"];
+  }
+}
+void parser_serial::configure_attributes(nlohmann::json config){
   if(config.is_array()){
     for(auto attr = config.begin(); attr != config.end(); ++attr){
       if(attr->contains("name") &&
@@ -33,7 +44,7 @@ nlohmann::json parser_serial::get_attributes_from_data(void* data,
   boost::trim(*str);
 
   std::vector<std::string> parts;
-  boost::split(parts,*str,boost::is_any_of(","));
+  boost::split(parts,*str,boost::is_any_of(field_delim_));
 
   size_t counter = 0;
   for(auto part : parts) {
@@ -92,4 +103,7 @@ nlohmann::json parser_serial::get_config(){
     j.emplace_back(def);
   }
   return j;
+}
+char parser_serial::get_line_delim(){
+  return line_delim_;
 }
