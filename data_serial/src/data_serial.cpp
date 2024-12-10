@@ -6,6 +6,7 @@
 #include "time_helper.h"
 #include "parser_serial.h"
 #include "data_serial.h"
+#include "data_serial_config_helper.h"
 
 data_serial::data_serial(nlohmann::json config) : data_module_base(config){
   std::cout  << ec::time_helper::time_rfc_3339() <<" : ";
@@ -20,61 +21,6 @@ data_serial::data_serial(nlohmann::json config) : data_module_base(config){
 
 data_serial::~data_serial() {
   exit();
-}
-
-bool data_serial::extract_hardware_name(nlohmann::json j, std::string& name){
-  bool success = false;
-  if(j.contains("hardware")){
-    if(j["hardware"].is_object()){
-      nlohmann::json hardware_conf = j["hardware"];
-      if(hardware_conf.contains("name")){
-        if(hardware_conf["name"].is_string()){
-          name = hardware_conf["name"];
-          success = true;
-        }
-        else{
-          std::cerr << "config.hardware.name is not a string" << std::endl;
-        }
-      }
-      else{
-        std::cerr << "config.hardware does not contain name" << std::endl;
-      }
-    }
-    else{
-      std::cerr << "config.hardware is not an object" << std::endl;
-    }
-  }
-  else{
-    std::cerr << "config.hardware is missing" << std::endl;
-  }
-  return success;
-}
-bool data_serial::extract_hardware_baudrate(nlohmann::json j, uint& baud){
-  bool success = false;
-  if(j.contains("hardware")){
-    if(j["hardware"].is_object()){
-      nlohmann::json hardware_conf = j["hardware"];
-      if(hardware_conf.contains("baud")){
-        if(hardware_conf["baud"].is_number_integer()){
-          baud = hardware_conf["baud"];
-          success = true;
-        }
-        else{
-          std::cerr << "config.hardware.name is not a string" << std::endl;
-        }
-      }
-      else{
-        std::cerr << "config.hardware does not contain name" << std::endl;
-      }
-    }
-    else{
-      std::cerr << "config.hardware is not an object" << std::endl;
-    }
-  }
-  else{
-    std::cerr << "config.hardware is missing" << std::endl;
-  }
-  return success;
 }
 
 bool data_serial::is_config_good(nlohmann::json j){

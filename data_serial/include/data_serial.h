@@ -7,8 +7,6 @@
 typedef std::chrono::system_clock::time_point sys_tp;
 
 class data_serial : public ec::data_module_base {
-  static bool extract_hardware_name(nlohmann::json j, std::string& name);
-  static bool extract_hardware_baudrate(nlohmann::json j, uint& baud);
   char get_line_delim_from_parser();
  protected:
   std::string port_name_;
