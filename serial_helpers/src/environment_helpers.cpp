@@ -44,33 +44,34 @@ std::shared_ptr<boost_serial_port> get_serial_port(boost_service& service,
   std::cout << "opening port " << port_name << "..."<< std::endl;
   if (std::filesystem::exists(port_name)) {
     std::cout << port_name << " exists" << std::endl;
+    serial_port_->open(port_name);
+    std::cout << "opened serial port " << port_name << std::endl;
+
+    // parameters for reading from proxybox
+    uint8_t serial_char_size_ = get_serial_char_size();
+    spb::parity::type serial_parity_ = get_serial_parity();
+    spb::stop_bits::type serial_stop_bits_ = get_serial_stop_bits();
+    spb::flow_control::type serial_flow_control_ = get_serial_flow_control();
+
+    serial_port_->set_option(spb::baud_rate(baud_rate));
+    std::cout << "set baud_rate : " << baud_rate << std::endl;
+
+    serial_port_->set_option(spb::character_size(serial_char_size_));
+    std::cout << "set char_size : " << int(serial_char_size_) << std::endl;
+
+    serial_port_->set_option(spb::parity(serial_parity_));
+    std::cout << "set parity : " << int(serial_parity_) << std::endl;
+
+    serial_port_->set_option(spb::stop_bits(serial_stop_bits_));
+    std::cout << "set stop bits : " << int(serial_stop_bits_) << std::endl;
+
+    serial_port_->set_option(spb::flow_control(serial_flow_control_));
+    std::cout << "set flow control : " << int(serial_flow_control_) << std::endl;
   }
   else{
     std::cout << port_name << " DOES NOT EXIST!" << std::endl;
+    serial_port_->close();
   }
-  serial_port_->open(port_name);
-  std::cout << "opened serial port " << port_name << std::endl;
-
-  // parameters for reading from proxybox
-  uint8_t serial_char_size_ = get_serial_char_size();
-  spb::parity::type serial_parity_ = get_serial_parity();
-  spb::stop_bits::type serial_stop_bits_ = get_serial_stop_bits();
-  spb::flow_control::type serial_flow_control_ = get_serial_flow_control();
-
-  serial_port_->set_option(spb::baud_rate(baud_rate));
-  std::cout << "set baud_rate : " << baud_rate << std::endl;
-
-  serial_port_->set_option(spb::character_size(serial_char_size_));
-  std::cout << "set char_size : " << int(serial_char_size_) << std::endl;
-
-  serial_port_->set_option(spb::parity(serial_parity_));
-  std::cout << "set parity : " << int(serial_parity_) << std::endl;
-
-  serial_port_->set_option(spb::stop_bits(serial_stop_bits_));
-  std::cout << "set stop bits : " << int(serial_stop_bits_) << std::endl;
-
-  serial_port_->set_option(spb::flow_control(serial_flow_control_));
-  std::cout << "set flow control : " << int(serial_flow_control_) << std::endl;
 
   return serial_port_;
 }
