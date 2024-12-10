@@ -36,11 +36,6 @@ void data_serial::config_from_json(nlohmann::json j){
     data_serial_config::extract_hardware_name(j,port_name_);
     data_serial_config::extract_hardware_baudrate(j, baud_rate_);
     parser_->configure(j["parser"]);
-    // TODO : check that parrser exists;
-    // TODO : configure in base class
-
-    nlohmann::json parser_attributes = parser_->get_all_supported_attributes();
-    attribute_host_.update_attributes_from_array(parser_attributes);
   }
   else{
     std::cerr << "config not good!" << std::endl;
