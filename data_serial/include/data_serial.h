@@ -8,7 +8,6 @@ typedef std::chrono::system_clock::time_point sys_tp;
 
 class data_serial : public ec::data_module_base {
   char get_line_delim_from_parser();
- protected:
   std::string port_name_;
   uint baud_rate_;
   std::shared_ptr<boost::asio::serial_port> serial_port_;
